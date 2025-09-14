@@ -1,5 +1,4 @@
 "use server";
-
 import { auth, db } from "@/firebase/admin";
 import { cookies } from "next/headers";
 
@@ -25,6 +24,11 @@ export async function setSessionCookie(idToken: string) {
   });
 }
 
+type SignUpParams = {
+  uid: string;
+  name: string;
+  email: string;
+};
 export async function signUp(params: SignUpParams) {
   const { uid, name, email } = params;
 
@@ -66,6 +70,12 @@ export async function signUp(params: SignUpParams) {
     };
   }
 }
+
+type SignInParams = {
+  uid: string;
+  idToken: string;
+  email: string;
+};
 
 export async function signIn(params: SignInParams) {
   const { email, idToken } = params;
