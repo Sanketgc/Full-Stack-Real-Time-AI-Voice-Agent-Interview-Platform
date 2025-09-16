@@ -84,6 +84,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         }
 
         await signIn({
+          uid: userCredential.user.uid,
           email,
           idToken,
         });
