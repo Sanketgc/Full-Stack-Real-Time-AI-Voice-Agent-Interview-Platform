@@ -1,6 +1,8 @@
 "use server";
 import { auth, db } from "@/firebase/admin";
+import { User } from "@vapi-ai/web/dist/api";
 import { cookies } from "next/headers";
+import {  Interview   }from "@/constants/index";
 
 // Session duration (1 week)
 const SESSION_DURATION = 60 * 60 * 24 * 7;
@@ -108,36 +110,49 @@ export async function signOut() {
 }
 
 // Get current user from session cookie
-// export async function getCurrentUser(): Promise<User | null> {
-//   const cookieStore = await cookies();
 
-//   const sessionCookie = cookieStore.get("session")?.value;
-//   if (!sessionCookie) return null;
+export async function getCurrentUser(): Promise<User | null> {
+  const cookieStore = await cookies();
 
-//   try {
-//     const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
+  const sessionCookie = cookieStore.get("session")?.value;
+  if (!sessionCookie) return null;
 
-//     // get user info from db
-//     const userRecord = await db
-//       .collection("users")
-//       .doc(decodedClaims.uid)
-//       .get();
-//     if (!userRecord.exists) return null;
+  try {
+    const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
 
-//     return {
-//       ...userRecord.data(),
-//       id: userRecord.id,
-//     } as User;
-//   } catch (error) {
-//     console.log(error);
+    // get user info from db
+    const userRecord = await db
+      .collection("users")
+      .doc(decodedClaims.uid)
+      .get();
+    if (!userRecord.exists) return null;
 
-//     // Invalid or expired session
-//     return null;
-//   }
-// }
+    return {
+      ...userRecord.data(),
+      id: userRecord.id,
+    } as User;
+  } catch (error) {
+    console.log(error);
+    // Invalid or expired session
+    return null;
+  }
+  console.log(getCurrentUser);
+}
+
+export async function getInterviewByUserId(userId: string) {
+  const interviews = await db
+    .collection("interviews")
+    .where("userId", "==", userId)
+    .get();
+
+  return interviews.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Interview[];
+}
 
 // Check if user is authenticated
-// export async function isAuthenticated() {
-// const user = await getCurrentUser();
-// return !!user;
-// }
+export async function isAuthenticated() {
+const user = await getCurrentUser();
+return !!user;
+}

@@ -9,6 +9,7 @@ import {
   getInterviewsByUserId,
   getLatestInterviews,
 } from "@/lib/actions/general.action";
+import { dummyInterviews } from "@/constants";
 
 async function Home() {
   const user = await getCurrentUser();
@@ -36,7 +37,7 @@ async function Home() {
         </div>
 
         <Image
-          src="/robot.png"
+          src="/types/robot.png"
           alt="robo-dude"
           width={400}
           height={400}
@@ -46,47 +47,20 @@ async function Home() {
 
       <section className="flex flex-col gap-6 mt-8">
         <h2>Your Interviews</h2>
-
-        <div className="interviews-section">
-          {hasPastInterviews ? (
+      
+      <div className="interviews-section">
+        {
+          hasPastInterviews ? (
             userInterviews?.map((interview) => (
-              <InterviewCard
-                key={interview.id}
-                userId={user?.id}
-                interviewId={interview.id}
-                role={interview.role}
-                type={interview.type}
-                techstack={interview.techstack}
-                createdAt={interview.createdAt}
-              />
-            ))
-          ) : (
-            <p>You haven&apos;t taken any interviews yet</p>
-          )}
-        </div>
+              <InterviewCard {...interview} interviewId={interview.id} key={interview.id} />
+          ))) : (
+            <p>You haven't taken any interviews yet.</p>
+          )
+          }
+      
+      </div>
       </section>
 
-      <section className="flex flex-col gap-6 mt-8">
-        <h2>Take Interviews</h2>
-
-        <div className="interviews-section">
-          {hasUpcomingInterviews ? (
-            allInterview?.map((interview) => (
-              <InterviewCard
-                key={interview.id}
-                userId={user?.id}
-                interviewId={interview.id}
-                role={interview.role}
-                type={interview.type}
-                techstack={interview.techstack}
-                createdAt={interview.createdAt}
-              />
-            ))
-          ) : (
-            <p>There are no interviews available</p>
-          )}
-        </div>
-      </section>
     </>
   );
 }

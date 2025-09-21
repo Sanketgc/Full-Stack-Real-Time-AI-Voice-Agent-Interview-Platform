@@ -4,22 +4,23 @@ import { generateObject } from "ai";
 import { google } from "@ai-sdk/google";
 
 import { db } from "@/firebase/admin";
-import { feedbackSchema } from "@/constants";
 
-export async function createFeedback(params: CreateFeedbackParams) {
+import { feedbackSchema, Interview   }from "@/constants/index";
+
+export async function createFeedback(params: createfeedback) {
   const { interviewId, userId, transcript, feedbackId } = params;
 
   try {
     const formattedTranscript = transcript
       .map(
-        (sentence: { role: string; content: string }) =>
+        (sentence: { role: string; content: string }): string =>
           `- ${sentence.role}: ${sentence.content}\n`
       )
       .join("");
 
     const { object } = await generateObject({
       model: google("gemini-2.0-flash-001", {
-        structuredOutputs: false,
+        structuredOutputs: false, 
       }),
       schema: feedbackSchema,
       prompt: `
@@ -66,10 +67,10 @@ export async function createFeedback(params: CreateFeedbackParams) {
   }
 }
 
-export async function getInterviewById(id: string): Promise<Interview | null> {
+export async function getInterviewById(id: string): Promise<Interview[] | null> {
   const interview = await db.collection("interviews").doc(id).get();
 
-  return interview.data() as Interview | null;
+  return interview.data() as Interview[] | null;
 }
 
 export async function getFeedbackByInterviewId(
@@ -121,5 +122,5 @@ export async function getInterviewsByUserId(
   return interviews.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  })) as Interview[];
+  })) as Interview[] ;
 }

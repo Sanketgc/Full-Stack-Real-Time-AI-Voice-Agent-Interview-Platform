@@ -84,7 +84,7 @@ const InterviewCard = ({
           <div className="flex flex-row gap-5 mt-3">
             <div className="flex flex-row gap-2">
               <Image
-                src="/calendar.svg"
+                src="/types/calendar.svg"
                 width={22}
                 height={22}
                 alt="calendar"
@@ -93,7 +93,7 @@ const InterviewCard = ({
             </div>
 
             <div className="flex flex-row gap-2 items-center">
-              <Image src="/star.svg" width={22} height={22} alt="star" />
+              <Image src="/types/star.svg" width={22} height={22} alt="star" />
               <p>{feedback?.totalScore || "---"}/100</p>
             </div>
           </div>
