@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants/index";
-import { createFeedback } from "@/lib/actions/general.action";
+import  { createFeedback } from "@/lib/actions/general.action";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -108,10 +108,9 @@ const Agent = ({
       console.log("handleGenerateFeedback");
 
       const { success, feedbackId: id } = await createFeedback({
-        interviewId: interviewId!,
-        userId: userId!,
+        interviewId: String(interviewId!),
+        userId: String(userId!),
         transcript: messages,
-        feedbackId,
       });
 
       if (success && id) {
@@ -124,7 +123,7 @@ const Agent = ({
 
     if (callStatus === CallStatus.FINISHED) {
       if (type === "generate") {
-        router.push("/");
+        router.push("/");2
       } else {
         handleGenerateFeedback(messages);
       }

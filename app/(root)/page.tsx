@@ -52,7 +52,7 @@ async function Home() {
         {
           hasPastInterviews ? (
             userInterviews?.map((interview) => (
-              <InterviewCard {...interview} interviewId={interview.id} key={interview.id} />
+              <InterviewCard {...interview} id={interview.id} key={interview.id} />
           ))) : (
             <p>You haven't taken any interviews yet.</p>
           )

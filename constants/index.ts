@@ -189,6 +189,13 @@ export const feedbackSchema = z.object({
   finalAssessment: z.string(),
 });
 
+export type createFeedback ={
+  interviewId: string ;
+  userId: string ;
+  transcript: { role: string; content: string }[];
+  feedbackId?: string ;
+};
+
 export const interviewCovers = [
   "/adobe.png",
   "/amazon.png",
@@ -203,6 +210,16 @@ export const interviewCovers = [
   "/tiktok.png",
   "/yahoo.png",
 ];
+
+
+export type InterviewCardProps = {
+  id: string;
+  userId: string;
+  role: string;
+  type: string;
+  techstack: string[];
+  createdAt: string | number;
+};
 
 export type Interview = {
   id: string;

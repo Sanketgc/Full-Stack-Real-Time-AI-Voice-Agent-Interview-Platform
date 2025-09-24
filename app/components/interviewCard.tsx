@@ -8,18 +8,12 @@ import { Button } from "./ui/button";
 import DisplayTechIcons from "./DisplayTechIcons";
 import { cn, getRandomInterviewCover } from "@/lib/utils";
 import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
+import { InterviewCardProps } from "@/constants/index";
+import { id } from "zod/v4/locales";
 
-type InterviewCardProps = {
-  interviewId: string;
-  userId: string;
-  role: string;
-  type: string;
-  techstack: string[];
-  createdAt: string | number;
-};
 
 const InterviewCard = ({
-  interviewId,
+  id,
   userId,
   role,
   type,
@@ -30,16 +24,16 @@ const InterviewCard = ({
 
   useEffect(() => {
     const fetchFeedback = async () => {
-      if (userId && interviewId) {
+      if (userId && id) {
         const result = await getFeedbackByInterviewId({
-          interviewId,
+          id,
           userId,
         });
         setFeedback(result);
       }
     };
     fetchFeedback();
-  }, [userId, interviewId]);
+  }, [userId, id]);
 
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
 
@@ -112,8 +106,8 @@ const InterviewCard = ({
             <Link
               href={
                 feedback
-                  ? `/interview/${interviewId}/feedback`
-                  : `/interview/${interviewId}`
+                  ? `/interview/${id}/feedback`
+                  : `/interview/${id}`
               }
             >
               {feedback ? "Check Feedback" : "View Interview"}
